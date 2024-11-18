@@ -16,7 +16,9 @@ fn is_terminal(fd: i32) -> bool {
 fn main() {
     let s: String = (0..5).map(|i| (isatty(i) as usize).to_string()).collect();
     println!("{s}");
-    let s: String = (0..5).map(|i| (is_terminal(i) as usize).to_string()).collect();
+    let s: String = (0..5)
+        .map(|i| (is_terminal(i) as usize).to_string())
+        .collect();
     println!("{s}");
 }
 
@@ -26,12 +28,16 @@ mod test {
 
     #[test]
     fn test() {
-        let s: String = (0..5).map(|i| (isatty(i) as usize).to_string()).collect();
-        println!("{s}");
-        assert_eq!("11100", s);
-
-        let s: String = (0..5).map(|i| (is_terminal(i) as usize).to_string()).collect();
-        println!("{s}");
-        assert_eq!("11100", s);
+        let s1: String = (0..5).map(|i| (isatty(i) as usize).to_string()).collect();
+        println!("{s1}");
+        let s2: String = (0..5)
+            .map(|i| (is_terminal(i) as usize).to_string())
+            .collect();
+        println!("{s2}");
+        let is_github_actions = std::env::var("GITHUB_ACTIONS").unwrap_or_default() == "true";
+        let v = if is_github_actions { "00000" } else { "11100" };
+        println!("{v}");
+        assert_eq!(v, s1);
+        assert_eq!(v, s2);
     }
 }
