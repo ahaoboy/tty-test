@@ -21,7 +21,11 @@ jobs:
           override: true
       - name: run
         run: |
-            cargo run
+          cargo run
+      - name: bash
+        if: ${{ !startsWith(matrix.os, 'windows') }}
+        run: |
+          bash -c "[ -t 0 ] && echo 1 || echo 0; [ -t 1 ] && echo 1 || echo 0; [ -t 2 ] && echo 1 || echo 0"
       - name: test
         run: |
-            cargo test
+          cargo test
